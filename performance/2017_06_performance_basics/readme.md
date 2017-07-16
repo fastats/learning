@@ -128,10 +128,10 @@ Make sure you get this output at the command line, and are comfortable running t
 #### Structure of an Assembly program
 
 - Assembly programs contain 3 parts: `data`, `bss` and `text` sections.
-- The `data` section is for immutable constants.
-- The `bss` section is for variables.
+- The `data` section is for any global variables.
+- The `bss` section is for zero-initialised variables.
 - The `text` section is for code.
-- Functions are declared with the function name followed by a colon. The `start:` block above is a function.
+- Functions are declared with the function name followed by a colon. The `start:` block above is a function (also known as a `code block`).
 - `start` is a special function, equivalent to the `main` function in C/C++ code - this is executed by default, and is the start of all assembly programs.
 - `int 0x80` is the 32-bit command to execute a system call - `int` tells the hardware to perform an interrupt, `0x80` is integer 128 in hex, which on Linux/Mac tells the kernel to perform a system call.
 - The exact `syscall` is determined by the value in the `eax` register. In the example above we have put `4` in the `eax` register with `mov eax, 4`, which is the syscall number for `sys_write`.
