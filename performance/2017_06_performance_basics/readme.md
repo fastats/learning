@@ -54,14 +54,14 @@ to maximise performance given our knowledge of the hardware limitations.
 This section is purely to gain a basic understanding of assembly structure,
 and to be able to debug some loops.
 
-To start with, you will need to ensure you have `NASM` installed -
+To start with, you will need to ensure you have [`NASM`](www.nasm.us) installed -
 `NASM` is the netwide assembler, this lets us write code at almost the
 lowest level possible, and is useful in order to understand the reasons
 for performance limitations in current CPU architectures.
 
 To install NASM, go to `www.nasm.us` and download the latest version.
 This should work on any major operating system, and the code we write
-will be largely OS-independent (if you're on Windows you may have some differences).
+will be largely OS-independent (if you're on Windows you may have some changes to make).
 
 Open a command line and type `nasm` or `./nasm` in the correct directory, and confirm that you get an output like this:
 
@@ -138,9 +138,6 @@ Make sure you get this output at the command line, and are comfortable running t
 
 > In this way, assembler instructions may look backwards to people used to the major imperative languages (Java/C/C++/Python); in assembler, you push arguments onto the stack or into registers, then call the function name.
 
-For a complete introduction to assembler, [read this excellent document by Agner Fog](http://www.agner.org/optimize/optimizing_assembly.pdf)
-
-
 #### Looping in assembly
 
 There are many dialects/instructions which allow looping in assembly, but
@@ -190,6 +187,8 @@ It should be obvious from this how to translate a Java-/C++-style for-loop into 
 That's the end of our (very) brief introduction to assembler - you will
 need these skills when debugging complicated nested loops in the next
 section.
+
+For a complete introduction to assembler, [read this excellent document by Agner Fog](http://www.agner.org/optimize/optimizing_assembly.pdf)
 
 ### Matrix-Matrix Multiplication (MMM)
 
@@ -285,7 +284,7 @@ Before we discuss the code, let's discuss the compilation options:
 * `-O0` - Optimization level zero. change to `-O1`, `-O2`, or `-O3` for more advanced optimizations.
 * `-Wall -pedantic` - This turns on (almost) all available compiler warnings. **Always** use this. If the compiler flags anything, you've made a mistake.
 
-For the purposes of learning about code optimizations, we will start with the compiler at optimization-level zero `-O0`, but we will use the other options later for comparison.
+For the purposes of learning about **code** optimizations, we will start with the **compiler** at optimization-level zero `-O0`, but we will use the other options later for comparison.
 
 **Task** - Save the code above as `mmm_naive.cpp` and ensure you can compile and run the code on your PC.
 
@@ -322,7 +321,7 @@ The main part we care about is the MMM part:
 
 As you can see, there's 3 nested for-loops iterating over the length of the matrix, making this algorithm cubic (ie, scales as `n^3`).
 
-Repeating this code 5 times, we get roughly similar results each time:
+Repeating this program 5 times, we get roughly similar results each time:
 
 <img src="images/mmm_naive.png" height="400" width="800">
 
@@ -346,6 +345,10 @@ by the first image in that article:
 
 <img src="images/row-major-2D.png">
 
+By iterating in across columns first (0,0 -> 1,0 -> 2,0), we are having to skip over items in the
+contiguous block in memory. If we iterate across the rows first (0,0 -> 0,1 -> 0,2), then we are accessing
+this piece of memory sequentially. Sequential access is **much** faster.
+
 The simplistic way to think about this is that computers are heavily optimised for streaming a large block of contiguous data from main memory (RAM) to the processor.
 
 The slightly more accurate way of understanding this is that every request to RAM actually fetches more data that you need - it automatically picks up the next few items as well.
@@ -354,7 +357,7 @@ As a result, if you access items in the same order as they are in RAM (0,0 -> 0,
 you won't have to continually go to RAM, as the second, third,
 fourth requests will already have the data available in the CPU caches.
 
-Otherwise we are 'jumping' around in memory going from 0,0 -> 1,0 -> 2,0, in the example image above.
+If you recall the latencies from the start of the article, this will be hundreds of times faster.
 
 To optimise the code above for RAM/memory layout, we therefore need to reverse the order of the for-loops from `kji` to `ijk`:
 
@@ -397,13 +400,13 @@ Modern superscalar CPUs are very good at ensuring data is available when
 needed, but they are far from perfect, so it is still useful to help the
 compiler/CPU where possible.
 
-This technique is usually referred to as `Loop Tiling` or `Loop Blocking`,
+One technique to optimise cache access is referred to as `Loop Tiling` or `Loop Blocking`,
 with a nice article from Intel [discussing the benefits here](https://software.intel.com/en-us/articles/how-to-use-loop-blocking-to-optimize-memory-use-on-32-bit-intel-architecture).
 
 The important point here is that we re-use items already in the cache by
 performing as many computations on a small `tile` of data as possible, before
 moving onto the next tile. This stops us continually evicting items from
-the cache, and then re-requesting them a while later.
+the cache, and then re-requesting the same data later.
 
 To implement this, we will need to **define an integer which controls the size of the blocks**:
 
@@ -437,16 +440,16 @@ Items to note:
 
 Timing this Cache-optimised algorithm gives us this:
 
-![Cache MMM][mmm_cache]
+<img src="images/mmm_cache.png" height="400" width="800">
 
 This Cache-optimized MMM has an average of ~4.6 million clock cycles, which is:
 
  - ~44% of the runtime of the RAM-optimized algorithm
  - ~27% of the runtime of the naive algorithm
 
- > This may seem counter-intuitive at first, but adding another set of nested for loops inside the main loops has reduced cache misses, consequently reducing runtime by over 50%.
+**This may seem counter-intuitive at first, but adding another set of nested for loops inside the main loops has reduced cache misses, consequently reducing runtime by over 50%.**
 
-**Task** - find the optimal block size(s) for your hardware. Submit your graphs as PRs along with the CPU model info. (Hint: you should be able to find block sizes that are optimal for each of the L1, L2 and L3 caches).
+> **Task** - find the optimal block size(s) for your hardware. Submit your graphs as PRs along with the CPU model info. (Hint: you should be able to find block sizes that are optimal for each of the L1, L2 and L3 caches).
 
 ### Register-optimised MMM
 
@@ -514,7 +517,7 @@ This is why we've only run using optimization level zero so far.
 If we now compare the Cache- and Register- optimised versions at both
 `-O0` and `-O1`, we see this:
 
-<img src="images/mmm_reg_opt.png" height="400", width="800">
+<img src="images/mmm_reg_opt.png" height="550" width="800">
 
 The Cache-optimised and Register-optimized are at ~4.6 million and ~4.7
 million clock cycles, respectively, at optimization level zero.
@@ -526,13 +529,14 @@ at ~1.5 million clock cycles.
 This means that the register-optimised version with `-O1` has about 9%
 of the runtime of the original naive implementation.
 
+> **Task** - Modify your existing code to implement a register-optimised inner loop, as shown above.
+
 
 ### Fused-Multiply-Add (FMA)
 
 At the time of writing (Summer 2017), Fused-Multiply-Add (FMA) is
 generally regarded as the highest attainable level of performance for
-CPU instructions (for the pedants out there, I will clarify and explain
-this comment in future articles).
+CPU instructions.
 
 Where possible, you should always ensure that code uses / optimises into
  FMA instructions. FMA instructions usually start with `fmadd` or `vfmadd`,
@@ -544,7 +548,7 @@ FMA dictates that a CPU will perform
 a += b * c
 ```
 
-ie, it will multiply two numbers and add to a third, *in a single instruction*.
+ie, it will multiply two numbers and add to a third *in a single instruction*.
 This can be much faster than performing the multiplication and addition
 in separate instructions.
 
@@ -553,7 +557,9 @@ of matrix-matrix multiplication (MMM).
 
 Those of you familiar with linear algebra will now know why we started
 with MMM in order to show multiple optimizations and concepts for a single
-algorithm. We will move onto other linear algebra topics in later articles.
+algorithm. We will move onto other linear algebra topics in later articles,
+but it is worth noting that FMA forms the basis of a number of building blocks
+of numerical coding, and that it has been specifically optimised in CPU hardware.
 
 # What we've learned.
 
