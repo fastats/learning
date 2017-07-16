@@ -192,14 +192,20 @@ For a complete introduction to assembler, [read this excellent document by Agner
 
 ### Matrix-Matrix Multiplication (MMM)
 
-Matrix-matrix multiplication is one of the main building blocks of linear
+Matrix-matrix multiplication (MMM) is one of the main building blocks of linear
 algebra, and is described by
 
 ```
-A = BC
+C[i,k] = A[i,j] * B[j,k]
 ```
 
-where `A`, `B` and `C` are matrices.
+where `A`, `B` and `C` are matrices. (Apologies for the rubbish notation, but Github [continue to refuse to implement equations](https://github.com/github/markup/issues/897).
+
+If you are unfamiliar with MMM, [Andrew Ng's Coursera course is excellent](https://www.coursera.org/learn/machine-learning/supplement/l0myT/matrix-matrix-multiplication).
+
+It is worth spending time becoming familiar with the algorithm, as it is one of
+the fundamental building blocks of all of linear algebra, and will be re-visited
+throughout this series.
 
 ### Naive MMM
 
@@ -437,6 +443,10 @@ Items to note:
 
 - the original loops are no longer iterating linearly - the final terms in the for-loops have changed from `x++` to `x+=b`, as we are striding over the size of the block.
 - the new loops then iterate across these strided blocks linearly, thereby reducing cache misses, and reusing items already in the caches.
+
+An additional advantage of Loop Tiling / Loop Blocking is that it
+facilitates parallelism across CPU cores, because each tile can be processed
+separately.
 
 Timing this Cache-optimised algorithm gives us this:
 
