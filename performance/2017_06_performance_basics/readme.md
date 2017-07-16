@@ -196,7 +196,7 @@ Matrix-matrix multiplication (MMM) is one of the main building blocks of linear
 algebra, and is described by
 
 ```
-C[i,k] = A[i,j] * B[j,k]
+C[i,j] = A[i,k] * B[k,j]
 ```
 
 where `A`, `B` and `C` are matrices. (Apologies for the rubbish notation, but Github [continue to refuse to implement equations](https://github.com/github/markup/issues/897).
@@ -276,7 +276,10 @@ int main(void) {
 }
 ```
 
-You should type this out and compile it **with zero optimizations**, for example on linux/mac use:
+
+All matrices in this example are 1000x1000 squares, but the algorithm works for appropriate matrices where (n x m)(m x p) = (n x p).
+
+You should type this code out and compile it **with zero optimizations**, for example on linux/mac use:
 
 ```
 g++ mmm_naive.cpp -o mmm_naive -O0 -Wall -pedantic
