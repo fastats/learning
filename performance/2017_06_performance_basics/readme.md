@@ -1,14 +1,4 @@
 
-[latency]: [images/latency.png] "Cache latency"
-[memory_latency]: [images/memory_latency.png] "Memory latency"
-[row_major_2d]: [images/row-major-2D.png] "Row major ordering"
-[mmm_naive]: [images/mmm_naive.png] "Naive MMM"
-[mmm_ram]: [images/mmm_ram.png] "RAM MMM"
-[mmm_cache]: [images/mmm_cache.png] "Cache MMM"
-[mmm_reg]: [images/mmm_reg.png] "Reg MMM"
-[mmm_reg_opt]: [images/mmm_reg_opt.png] "Reg MMM Opt"
-
-
 # Performance Basics
 
 *30th June 2017*, by Dave Willmer
@@ -49,7 +39,7 @@ but accessing RAM is much slower than having the data in CPU caches / registers 
 
 Here's an approximation of cache latencies, from [this discussion on Reddit](https://www.reddit.com/r/hardware/comments/5zvxm0/eli5_why_are_l3_caches_in_cpus_so/)
 
-![Cache latency][latency]
+<img src="images/latency.png" width="900" height="400">
 
 Obviously the numbers are hardware-dependent, and are changing all the time,
 but it's worth knowing that if the next piece of data the program requires
@@ -334,13 +324,13 @@ As you can see, there's 3 nested for-loops iterating over the length of the matr
 
 Repeating this code 5 times, we get roughly similar results each time:
 
-![Naive MMM][mmm_naive]
+<img src="images/mmm_naive.png" height="400" width="800">
 
 which is hovering around 16-17 million clock cycles.
 
-A simple mean calculation gives us ~16.7 million clock cycles. This will be our baseline value for comparing optimizations.]]
+A simple mean calculation gives us ~16.7 million clock cycles. This will be our baseline value for comparing optimizations.
 
-**Task** - Compile and run this code on your machine, and ensure the outputs are similar (your clock cycle count will be different).
+> **Task** - Compile and run this code on your machine, and ensure the outputs are similar (your clock cycle count will be different).
 
 ### RAM-optimised MMM
 
@@ -354,7 +344,7 @@ An in-depth description of this memory layout [can be found in Eli Bendersky's a
 (highly recommended reading), but the main concept is illustrated nicely
 by the first image in that article:
 
-![row major ordering][row_major_2d]
+<img src="images/row-major-2D.png">
 
 The simplistic way to think about this is that computers are heavily optimised for streaming a large block of contiguous data from main memory (RAM) to the processor.
 
@@ -368,7 +358,7 @@ Otherwise we are 'jumping' around in memory going from 0,0 -> 1,0 -> 2,0, in the
 
 To optimise the code above for RAM/memory layout, we therefore need to reverse the order of the for-loops from `kji` to `ijk`:
 
-```
+```cpp
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             for (int k = 0; k < N; k++) {
@@ -380,7 +370,7 @@ To optimise the code above for RAM/memory layout, we therefore need to reverse t
 
 Here's the clock cycle timings for the RAM-optimised algorithm as well as the original naive version:
 
-![RAM MMM][mmm_ram]
+<img src="images/mmm_ram.png" height="400" width="800">
 
 As you can see, simply ensuring that we iterate over contiguous blocks of memory reduces the runtime from ~16.7 million to ~10.3 million clock cycles.
 
@@ -511,7 +501,7 @@ block, and the new inner loops iterate linearly over those blocks.
 
 Timing this Register-optimised algorithm gives us this:
 
-![Reg MMM][mmm_reg]
+<img src="images/mmm_reg.png" height="400" width="800">
 
 This may be somewhat surprising - we have implemented another optimisation
 in the way we iterate over the matrix, and the register-optimised version
@@ -524,7 +514,7 @@ This is why we've only run using optimization level zero so far.
 If we now compare the Cache- and Register- optimised versions at both
 `-O0` and `-O1`, we see this:
 
-![Reg MMM Opt][mmm_reg_opt]
+<img src="images/mmm_reg_opt.png" height="400", width="800">
 
 The Cache-optimised and Register-optimized are at ~4.6 million and ~4.7
 million clock cycles, respectively, at optimization level zero.
