@@ -59,7 +59,7 @@ To start with, you will need to ensure you have [`NASM`](www.nasm.us) installed 
 lowest level possible, and is useful in order to understand the reasons
 for performance limitations in current CPU architectures.
 
-To install NASM, go to `www.nasm.us` and download the latest version.
+To install NASM, go to [www.nasm.us](http://www.nasm.us) and download the latest version.
 This should work on any major operating system, and the code we write
 will be largely OS-independent (if you're on Windows you may have some changes to make).
 
