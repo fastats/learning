@@ -99,7 +99,8 @@ msg db 'My first program', 0xf
 msg.len equ $ - msg
 ```
 
-Or, if you're on Linux, using "raw" syscalls you need to pass their arguments by registers. See: [Wikibooks resource on Linux syscalls](https://en.wikibooks.org/wiki/X86_Assembly/Interfacing_with_Linux#Making_a_syscall) and http://syscalls.kernelgrok.com/
+Or, if you're on Linux, when using "raw" syscalls you need to pass their arguments by registers, not by stack.
+See: [Wikibooks resource on Linux syscalls](https://en.wikibooks.org/wiki/X86_Assembly/Interfacing_with_Linux#Making_a_syscall) and http://syscalls.kernelgrok.com/
 
 ```asm
 ; Linux version
@@ -109,7 +110,7 @@ global start
 section .text
 
 start:
-    ; Linux syscall: write(1, msg, msg.len) - 1 starts for stdout
+    ; Linux syscall: write(1, msg, msg.len) - 1 stands for stdout
     mov eax, 4
     mov ebx, 1
     mov ecx, msg
@@ -219,6 +220,7 @@ style architectures where the stack is used heavily. ["RISC"](https://en.wikiped
 style architectures (e.g. ARM, MIPS, SPARC) tend to have more general-purpose registers. One could argue that having fewer registers
 makes writing assembly code by hand a bit harder. (Actually, AMD doubled the number of general-purpose
 registers with x86\_64 from 8 to 16 [reference](https://en.wikipedia.org/wiki/X86-64#Architectural_features)).
+On the other hand, CISC instruction sets provide much more complex, expressive instructions that can take many clock cycles and mix addressing modes.
 
 It should be obvious from this how to translate a Java-/C++-style for-loop into assembly code.
 
