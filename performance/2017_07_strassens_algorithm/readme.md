@@ -61,7 +61,7 @@ C22 = M1 - M2 + M3 + M6
 The complexity of Strassen's algorithm is covered in detail [here](http://mathworld.wolfram.com/StrassenFormulas.html), [here](http://www.geeksforgeeks.org/strassens-matrix-multiplication/) and [here](http://www.cs.mcgill.ca/~pnguyen/251F09/matrix-mult.pdf), however the important detail is:
 
 - The number of multiplications for each section goes from 8 to 7, therefore the complexity goes from `O(n^log(8))` to `O(n^log(7))`.
-- In algorithmics we use log base 2, therefore log(8) = 3, log(7) = 2.807.
+- In algorithmics we use log base 2, therefore `log(8) = 3`, `log(7) = 2.807`.
 - This makes a huge difference to calculation times.
 
 > *Task:* The task for this lesson is to implement Strassen's algorithm in a language of your choice.
