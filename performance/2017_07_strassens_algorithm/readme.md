@@ -1,14 +1,13 @@
 
 # Strassen's Algorithm
 
-*25th July*, by Dave Willmer *
+*25th July 2017*, by Dave Willmer
 
-In the [first lesson] we focussed on matrix-matrix multiplication (MMM), partially because it's a simple concept and a nice way to teach the more complex performance ideas, but also because it's an important building block for all of linear algebra.
+In the [first lesson](../2017_06_performance_basics) we focussed on matrix-matrix multiplication (MMM), partially because it's a simple concept and a nice way to teach the more complex performance ideas, but also because it's an important building block for all of linear algebra.
 
 Given that it is so central to understanding linear algebra, we are going to focus on it in this lesson as well, however instead of looking at optimising for hardware, we will look at optimising the algorithm from a mathematical point of view.
 
-- We will cover [Strassen's Algorithm](https://en.wikipedia.org/wiki/Strassen_algorithm), as an introduction to implementing divide-and-conquer algorithms to reduce the algorithmic complexity.
-- We will then look at the various algorithms which improve on Strassen's.
+- We will cover [Strassen's Algorithm](https://en.wikipedia.org/wiki/Strassen_algorithm), as a simple, pragmatic introduction to implementing divide-and-conquer algorithms to reduce the algorithmic complexity.
 
 ### Strassen's Algorithm
 
@@ -62,7 +61,7 @@ C22 = M1 - M2 + M3 + M6
 The complexity of Strassen's algorithm is covered in detail [here](http://mathworld.wolfram.com/StrassenFormulas.html), [here](http://www.geeksforgeeks.org/strassens-matrix-multiplication/) and [here](http://www.cs.mcgill.ca/~pnguyen/251F09/matrix-mult.pdf), however the important detail is:
 
 - The number of multiplications for each section goes from 8 to 7, therefore the complexity goes from `O(n^log(8))` to `O(n^log(7))`.
-- In algorithmics we tend to use log base 2, therefore log(8) = 3, log(7) = 2.807.
+- In algorithmics we use log base 2, therefore log(8) = 3, log(7) = 2.807.
 - This makes a huge difference to calculation times.
 
 > *Task:* The task for this lesson is to implement Strassen's algorithm in a language of your choice.
