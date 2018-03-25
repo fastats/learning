@@ -99,51 +99,16 @@ msg db 'My first program', 0xf
 msg.len equ $ - msg
 ```
 
-Or, if you're on Linux, when using "raw" syscalls you need to pass their arguments by registers, not by stack.
-See: [Wikibooks resource on Linux syscalls](https://en.wikibooks.org/wiki/X86_Assembly/Interfacing_with_Linux#Making_a_syscall) and http://syscalls.kernelgrok.com/
-
-```asm
-; Linux version
-
-global start
-
-section .text
-
-start:
-    ; Linux syscall: write(1, msg, msg.len) - 1 stands for stdout
-    mov eax, 4
-    mov ebx, 1
-    mov ecx, msg
-    mov edx, msg.len
-    int 0x80
-
-    ; Linux syscall: exit(0)
-    mov eax, 1
-    mov ebx, 0
-    int 0x80
-
-
-section .data
-msg db 'My first program', 0xa
-msg.len equ $ - msg
-```
-
 If you type this into a text editor and save it as `first.asm`, you should be able to 'assemble' it using
 
-| MacOS                     | Linux                   | Linux 64 bit (x86\_64)    | Windows                   |
-| ------------------------- | ----------------------- | ------------------------- | ------------------------- |
-| `nasm -f macho first.asm` | `nasm -f elf first.asm` | `nasm -f elf32 first.asm` | `nasm -f win32 first.asm` |
+| MacOS                   | Linux                 | Windows                 |
+| ----------------------- | --------------------- | ----------------------- |
+| nasm -f macho first.asm | nasm -f elf first.asm | nasm -f win32 first.asm |
 
-This will output an object file called `first.o`, this then needs linking into an executable using `ld` (Mac/32 bit Linux) or `link.exe` (Windows):
+This will output an object file called `first.o`, this then needs linking into an executable using `ld` (Mac/Linux) or `link.exe` (Windows):
 
 ```
 ld first.o -o first
-```
-
-If you're on 64 bit Linux (x86\_64) you need to enable 32-bit emulation, otherwise it won't work:
-
-```
-ld -m elf_i386 first.o -o first
 ```
 
 This will output an executable which you can run using:
@@ -214,13 +179,6 @@ one value from another (in this case subtracting zero from ecx), and working
 out if the result is zero. If the result **is** zero, it sets the negative/carry flags
 in the CPU, which are the items checked by the `jne` instruction to find out
 whether to continue looping.
-- x86 architecture has a very limited set of general-purpose registers. This is
-one of the tradeoffs of ["CISC"](https://en.wikipedia.org/wiki/Complex_instruction_set_computer)
-style architectures where the stack is used heavily. ["RISC"](https://en.wikipedia.org/wiki/Reduced_instruction_set_computing)
-style architectures (e.g. ARM, MIPS, SPARC) tend to have more general-purpose registers. One could argue that having fewer registers
-makes writing assembly code by hand a bit harder. (Actually, AMD doubled the number of general-purpose
-registers with x86\_64 from 8 to 16 [reference](https://en.wikipedia.org/wiki/X86-64#Architectural_features)).
-On the other hand, CISC instruction sets provide much more complex, expressive instructions that can take many clock cycles and mix addressing modes.
 
 It should be obvious from this how to translate a Java-/C++-style for-loop into assembly code.
 
@@ -243,7 +201,7 @@ C[i,j] = A[i,k] * B[k,j]
 
 where `A`, `B` and `C` are matrices. (Apologies for the rubbish notation, but Github [continue to refuse to implement equations](https://github.com/github/markup/issues/897).
 
-If you are unfamiliar with MMM, [Andrew Ng's Machine Learning Coursera course is excellent](https://www.coursera.org/learn/machine-learning/supplement/l0myT/matrix-matrix-multiplication).
+If you are unfamiliar with MMM, [Andrew Ng's Coursera course is excellent](https://www.coursera.org/learn/machine-learning/supplement/l0myT/matrix-matrix-multiplication).
 
 It is worth spending time becoming familiar with the algorithm, as it is one of
 the fundamental building blocks of all of linear algebra, and will be re-visited
@@ -388,7 +346,7 @@ Where we allocate the arrays in the C code above, we are allocating a new array 
 
 The way the C language manages this is usually referred to as `row-major order`, meaning that the first axis you index iterates over the rows. The opposite to this is `column-major order` which is used by Fortran.
 
-What this means is that the loop constructs above are **not** fetching data items that are close to each other in memory.
+What this means is that the loop constructs above are **not** fetching data items that are close to eachother in memory.
 
 An in-depth description of this memory layout [can be found in Eli Bendersky's article here](http://eli.thegreenplace.net/2015/memory-layout-of-multi-dimensional-arrays/)
 (highly recommended reading), but the main concept is illustrated nicely
@@ -447,9 +405,9 @@ iterate over the data in the same order as it is in RAM, we also want to
 iterate over the data in the cache lines in a manner which minimises `cache misses`.
 
 A `cache miss` is where data is requested but is not available in the cache.
-Modern [superscalar](https://en.wikipedia.org/wiki/Superscalar_processor)
-CPUs are very good at ensuring data is available when needed, but they are far from perfect,
-so it is still useful to help the compiler/CPU where possible.
+Modern superscalar CPUs are very good at ensuring data is available when
+needed, but they are far from perfect, so it is still useful to help the
+compiler/CPU where possible.
 
 One technique to optimise cache access is referred to as `Loop Tiling` or `Loop Blocking`,
 with a nice article from Intel [discussing the benefits here](https://software.intel.com/en-us/articles/how-to-use-loop-blocking-to-optimize-memory-use-on-32-bit-intel-architecture).
@@ -577,7 +535,7 @@ If we now compare the Cache- and Register- optimised versions at both
 The Cache-optimised and Register-optimized are at ~4.6 million and ~4.7
 million clock cycles, respectively, at optimization level zero.
 
-However, at optimisation level one (`-O1`), the cache-optimised algorithm
+However, at optimisation level one (`-O1'), the cache-optimised algorithm
 is at ~2.6 million clock cycles, but the register-optimised algorithm is
 at ~1.5 million clock cycles.
 
@@ -623,10 +581,8 @@ of numerical coding, and that it has been specifically optimised in CPU hardware
 - Naive implementations of numerical algorithms are *much* slower than
 optimised ones.
 - Numerical optimisations can be counter-intuitive (adding for-loops can
-make things *much* faster).
+make things *much* faster)
 - We can optimise for RAM, L3, L2, L1d, L1i and CPU registers.
-- Modern compilers are quite smart and can speed up your hand-optimized code even more
-when using compiler optimizations.
 - Linear Algebra is a great way to learn about CPU optimisations.
 
 # Tasks
@@ -634,4 +590,3 @@ when using compiler optimizations.
 - **Entry-level** Implement matrix-matrix multiplication (MMM) in Rust (www.rust-lang.org)
 - **Intermediate** Plot a 3d graph showing block size `b` on the x-axis, block size `c` on the y-axis and number of clock cycles on the `z`-axis.
 - **Expert** Use FMA intrinsics to implement the complementary error function (erfc). (TIP: use Horner's rule).
-
