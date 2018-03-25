@@ -18,6 +18,10 @@ class Paper(Hand):
     pass
 
 
+class Paperclip(Hand):
+    pass
+
+
 class Scissors(Hand):
     pass
 
@@ -25,10 +29,12 @@ class Scissors(Hand):
 class RPS(Enum):
     rock = Rock()
     paper = Paper()
+    paperclip = Paperclip()
     scissors = Scissors()
 
 
 def initialise():
     RPS.rock.set_beats(RPS.scissors)
     RPS.paper.set_beats(RPS.rock)
-    RPS.scissors.set_beats(RPS.paper)
+    RPS.paperclip.set_beats(RPS.paper)
+    RPS.scissors.set_beats(RPS.paperclip)
