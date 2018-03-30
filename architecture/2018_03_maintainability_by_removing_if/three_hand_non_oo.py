@@ -35,7 +35,7 @@ def rps_payoff_matrix(p1_move, p2_move):
 
 def rps_one_liner(p1_move, p2_move):
     """
-    Seems remiss to exclude a one-liner :)
+    The obligatory (almost) one-liner
     """
     outcome = (3 + p1_move.value - p2_move.value) % 3
     return decode_outcome(outcome)

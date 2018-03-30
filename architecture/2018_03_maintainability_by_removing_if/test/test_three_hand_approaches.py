@@ -1,10 +1,11 @@
+import importlib
 from unittest import TestCase
 
 import numpy as np
 import pandas as pd
 
-import importlib
 non_oo = importlib.import_module('architecture.2018_03_maintainability_by_removing_if.three_hand_non_oo')
+oo = importlib.import_module('architecture.2018_03_maintainability_by_removing_if.three_hand_oo')
 
 
 class RPSTestMixin:
@@ -41,10 +42,14 @@ class RPSTestMixin:
             outcome = self.fn(*move)
             assert outcome == 'Draw!'
 
+    @staticmethod
+    def all_moves():
+        return list(non_oo.Move)
+
     def test_long_run_outcomes(self):
 
         rng = np.random.RandomState(4)  # does not affect global state
-        moves = rng.choice(list(non_oo.Move), 2000)
+        moves = rng.choice(self.all_moves(), 2000)
         p1_moves = moves[:1000]
         p2_moves = moves[1000:]
 
@@ -74,6 +79,24 @@ class RPBiconnectedGraphTestCase(RPSTestMixin, TestCase):
 
     def setUp(self):
         self.fn = non_oo.rps_biconnected_graph
+
+
+class RPooTestCase(RPSTestMixin, TestCase):
+
+    @staticmethod
+    def all_moves():
+        return list(oo.Move)
+
+    @staticmethod
+    def p1_win_scenarios():
+        return (
+            (oo.Move.ROCK, oo.Move.SCISSORS),
+            (oo.Move.SCISSORS, oo.Move.PAPER),
+            (oo.Move.PAPER, oo.Move.ROCK),
+        )
+
+    def setUp(self):
+        self.fn = oo.rps_oo
 
 
 if __name__ == '__main__':
