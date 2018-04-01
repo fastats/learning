@@ -9,7 +9,7 @@ The following are three examples of non-OO approaches using pure Python.
 
 Start by updating the Move enum:
 
-<img src="images/enum.PNG" height="326" width="778">
+<img src="images/enum.PNG">
 
 ...and test expectations:
 
