@@ -41,13 +41,12 @@ def rps_one_liner(p1_move, p2_move):
     return decode_outcome(outcome)
 
 
-def rps_biconnected_graph(p1_move, p2_move):
+def rps_directed_graph(p1_move, p2_move):
     """
-    Game modelled as a connected, directed graph where each
-    vertex is order 2.  If p1_move identifies a node on the
-    graph then the 'departing' edge connects to the vertex
-    which represents the p2_move where p1 wins; the 'arriving'
-    edge connects to the p2_move where p2 wins.
+    Game modelled as a connected, directed graph.
+    If p1_move identifies a node on the graph then the 'departing'
+    edge connects to the vertex which represents the p2_move where
+    p1 wins; the 'arriving' edge connects to the p2_move where p2 wins.
     """
     arr = np.array(Move)
     idx = np.where(arr == p1_move)[0]
@@ -66,5 +65,5 @@ if __name__ == '__main__':
     outcome = rps_one_liner(Move.ROCK, Move.SCISSORS)
     print(outcome)
 
-    outcome = rps_biconnected_graph(Move.ROCK, Move.ROCK)
+    outcome = rps_directed_graph(Move.ROCK, Move.ROCK)
     print(outcome)
