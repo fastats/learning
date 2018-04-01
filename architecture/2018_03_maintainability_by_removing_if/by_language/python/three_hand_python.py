@@ -43,10 +43,16 @@ def rps_one_liner(p1_move, p2_move):
 
 def rps_directed_graph(p1_move, p2_move):
     """
-    Game modelled as a connected, directed graph.
-    If p1_move identifies a node on the graph then the 'departing'
-    edge connects to the vertex which represents the p2_move where
-    p1 wins; the 'arriving' edge connects to the p2_move where p2 wins.
+    Game modelled as a connected, directed graph whose structure is wholly
+    inferred from enum member ordering.
+
+    If we have 'n' enum members then, for all i in the range 1 to n, assume
+    member i 'beats' member i-1.
+
+    Assume enum member 0 'beats' enum member n.
+
+    Represent 'beat' relationship as a directed edge from one vertex to
+    another; an edge in the opposing direction represents a 'lose' relationship.
     """
     arr = np.array(Move)
     idx = np.where(arr == p1_move)[0]
