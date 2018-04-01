@@ -2,7 +2,7 @@ import importlib
 from unittest import TestCase
 
 PATH = 'architecture.2018_03_maintainability_by_removing_if.by_language.python.three_hand_python'
-non_oo = importlib.import_module(PATH)
+py_examples = importlib.import_module(PATH)
 
 
 class RPSTestMixin:
@@ -10,9 +10,9 @@ class RPSTestMixin:
     @staticmethod
     def p1_win_scenarios():
         return (
-            (non_oo.Move.ROCK, non_oo.Move.SCISSORS),
-            (non_oo.Move.SCISSORS, non_oo.Move.PAPER),
-            (non_oo.Move.PAPER, non_oo.Move.ROCK),
+            (py_examples.Move.ROCK, py_examples.Move.SCISSORS),
+            (py_examples.Move.SCISSORS, py_examples.Move.PAPER),
+            (py_examples.Move.PAPER, py_examples.Move.ROCK),
         )
 
     def p2_win_scenarios(self):
@@ -43,19 +43,19 @@ class RPSTestMixin:
 class RPSPayoffMatrixTestCase(RPSTestMixin, TestCase):
 
     def setUp(self):
-        self.fn = non_oo.rps_payoff_matrix
+        self.fn = py_examples.rps_payoff_matrix
 
 
 class RPSOneLinerTestCase(RPSTestMixin, TestCase):
 
     def setUp(self):
-        self.fn = non_oo.rps_one_liner
+        self.fn = py_examples.rps_one_liner
 
 
 class RPDirectedGraphTestCase(RPSTestMixin, TestCase):
 
     def setUp(self):
-        self.fn = non_oo.rps_directed_graph
+        self.fn = py_examples.rps_directed_graph
 
 
 if __name__ == '__main__':
