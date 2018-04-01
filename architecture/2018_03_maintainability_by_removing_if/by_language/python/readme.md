@@ -9,7 +9,7 @@ The following are three examples of non-OO approached using pure Python.
 
 Start by updating test expectations as follows:
 
-<img src="images/enum.png">
+<img src="images/enum.PNG">
 
 
 ## Payoff matrix
