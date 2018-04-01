@@ -3,7 +3,9 @@
 
 **1st Apr 2018**
 
-The following are three examples of non-OO approaches using pure Python.
+The following are examples of non-OO approaches to the Rock-Paper-Scissors game
+using pure Python; the commentary below relates to extension of the game to
+support a fourth move (paperclip).
 
 ## Update unit tests
 
