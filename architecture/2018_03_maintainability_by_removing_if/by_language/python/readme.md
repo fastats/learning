@@ -18,9 +18,8 @@ To adapt to our change in business requirement, we need simply to update the mat
 
 ## The obligatory one-liner
 
-This is not necessarily a recommended approach, but as an occasional code golf
-enthusiast (albeit one with a pretty poor handicap) it would seem remiss not to
-include it.
+As an occasional code golf enthusiast (albeit one with a pretty poor handicap) it 
+would seem remiss not to include it.
 
 
 ## Directed graph
@@ -45,6 +44,12 @@ To support the change in business requirement:
 
 
 
-There would be cleaner and more obvious graph representations with some
-refinement to the way the graph is modelled, but this might lean on some OO
-principles and is therefore not included here.
+It would be possible to leverage some OO principles to make the graph modelling
+and edge traversal more obvious, but this is deemed out of scope for this lesson.
+
+## Others
+
+There are some interesting solutions using truth tables which involve binary / 
+one-hot encoding of possible moves and composition of OR, AND and NOT logic to
+determine outcome.  But even the vanilla Rock-Paper-Scissors is laborious to
+encode and its extension to 4 moves is even more so.
