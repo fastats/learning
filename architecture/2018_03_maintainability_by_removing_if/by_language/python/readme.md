@@ -1,7 +1,7 @@
 
 # Approaches using Python
 
-**1st Apr 2018**
+**1st April 2018**
 
 The following are examples of non-OO approaches to the Rock-Paper-Scissors game
 using pure Python; the commentary below relates to extension of the game to
@@ -28,7 +28,7 @@ To adapt to our change in business requirement, we need simply to update the mat
 ## The obligatory one-liner
 
 As an occasional code golf enthusiast (albeit one with a pretty poor handicap), it 
-would seem remiss not to include it.
+would seem remiss not to include the following bogey:
 
 <img src="images/one_liner.PNG">
 
