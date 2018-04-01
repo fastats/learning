@@ -17,6 +17,8 @@ Start by updating the Move enum:
 
 <img src="images/updated_test.PNG">
 
+<img src="images/draw.PNG">
+
 
 ## Payoff matrix
 
@@ -25,12 +27,16 @@ To adapt to our change in business requirement, we need simply to update the mat
 
 <img src="images/payoff.PNG">
 
+This is a reasonably clear and concise approach.
+
 ## The obligatory one-liner
 
 As an occasional code golf enthusiast (albeit one with a pretty poor handicap), it 
 would seem remiss not to include the following bogey:
 
 <img src="images/one_liner.PNG">
+
+This is a pretty awful approach and very difficult to reason about.
 
 ## Directed graph
 
@@ -48,6 +54,9 @@ the vertex which it is beaten by.  In abstract:
 
 The graph structure is wholly inferred from the ordering of the enum member 
 values.  As such, so changes are required over and above updating the enum.
+
+This is a reasonable approach, but would be more obvious with a proper 
+OO representation of the graph.
 
 ## Others
 
