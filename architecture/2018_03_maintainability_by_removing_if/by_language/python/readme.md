@@ -11,7 +11,7 @@ support a fourth move (paperclip).
 
 Start by updating the Move enum:
 
-<img src="images/enum.PNG">
+<img src="images/enum.PNG" height="150" width="400">
 
 ...and test expectations:
 

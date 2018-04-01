@@ -9,6 +9,12 @@ class RPSTestMixin:
 
     @staticmethod
     def p1_win_scenarios():
+        """
+        Returns an iterable to 2-tuples of the form:
+            ((player 1 move, player 2 move), ...)
+
+        where player 1 beats player 2.
+        """
         return (
             (py_examples.Move.ROCK, py_examples.Move.SCISSORS),
             (py_examples.Move.SCISSORS, py_examples.Move.PAPER),
@@ -16,9 +22,21 @@ class RPSTestMixin:
         )
 
     def p2_win_scenarios(self):
+        """
+        Returns an iterable to 2-tuples of the form:
+            ((player 1 move, player 2 move), ...)
+
+        where player 2 beats player 1.
+        """
         return (s[::-1] for s in self.p1_win_scenarios())
 
     def draw_scenarios(self):
+        """
+        Returns an iterable to 2-tuples of the form:
+            ((player 1 move, player 2 move), ...)
+
+        where player 1 and player 2 draw.
+        """
         return ((s[0], s[0]) for s in self.p1_win_scenarios())
 
     def test_p1_wins(self):
