@@ -7,9 +7,13 @@ The following are three examples of non-OO approached using pure Python.
 
 ## Updating unit tests
 
-Start by updating test expectations as follows:
+Start by updating the Move enum:
 
 <img src="images/enum.PNG">
+
+...and test expectations as follows:
+
+<img src="images/updated_test.PNG">
 
 
 ## Payoff matrix
@@ -17,12 +21,14 @@ Start by updating test expectations as follows:
 This approach uses an explicitly defined payoff matrix Game Theory formulation.
 To adapt to our change in business requirement, we need simply to update the matrix:
 
+<img src="images/payoff.PNG">
 
 ## The obligatory one-liner
 
 As an occasional code golf enthusiast (albeit one with a pretty poor handicap) it 
 would seem remiss not to include it.
 
+<img src="images/one_liner.PNG">
 
 ## Directed graph
 
@@ -42,9 +48,8 @@ Each edge has a penalty which encodes the payoff; to play the game, we navigate
 from player 1's chosen Node to player 2's in one step - if we can, then we 
 observe the edge penalty to infer game outcome; if we can't then it's a draw.
 
-To support the change in business requirement:
-
-
+No changes are required since the structure of the graph is inferred entirely 
+from the ordering of enum values.
 
 It would be possible to leverage some OO principles to make the graph modelling
 and edge traversal more obvious, but this is deemed out of scope for this lesson.
