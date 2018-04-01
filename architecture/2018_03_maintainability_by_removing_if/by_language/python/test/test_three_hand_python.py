@@ -21,6 +21,10 @@ class RPSTestMixin:
             (py_examples.Move.PAPER, py_examples.Move.ROCK),
         )
 
+    @staticmethod
+    def swap_moves(scenarios):
+        return (s[::-1] for s in scenarios)
+
     def p2_win_scenarios(self):
         """
         Returns an iterable to 2-tuples of the form:
@@ -28,7 +32,7 @@ class RPSTestMixin:
 
         where player 2 beats player 1.
         """
-        return (s[::-1] for s in self.p1_win_scenarios())
+        return self.swap_moves(self.p1_win_scenarios())
 
     def draw_scenarios(self):
         """
