@@ -3,29 +3,29 @@
 
 **1st Apr 2018**
 
-The following are three examples of non-OO approached using pure Python.
+The following are three examples of non-OO approaches using pure Python.
 
-## Updating unit tests
+## Update unit tests
 
 Start by updating the Move enum:
 
-<img src="images/enum.PNG">
+<img src="images/enum.PNG" height="326" width="778">
 
-...and test expectations as follows:
+...and test expectations:
 
 <img src="images/updated_test.PNG">
 
 
 ## Payoff matrix
 
-This approach uses an explicitly defined payoff matrix Game Theory formulation.
+This approach uses an explicitly defined payoff matrix.
 To adapt to our change in business requirement, we need simply to update the matrix:
 
 <img src="images/payoff.PNG">
 
 ## The obligatory one-liner
 
-As an occasional code golf enthusiast (albeit one with a pretty poor handicap) it 
+As an occasional code golf enthusiast (albeit one with a pretty poor handicap), it 
 would seem remiss not to include it.
 
 <img src="images/one_liner.PNG">
@@ -44,15 +44,8 @@ the vertex which it is beaten by.  In abstract:
 
 ```
 
-Each edge has a penalty which encodes the payoff; to play the game, we navigate
-from player 1's chosen Node to player 2's in one step - if we can, then we 
-observe the edge penalty to infer game outcome; if we can't then it's a draw.
-
-No changes are required since the structure of the graph is inferred entirely 
-from the ordering of enum values.
-
-It would be possible to leverage some OO principles to make the graph modelling
-and edge traversal more obvious, but this is deemed out of scope for this lesson.
+The graph structure is wholly inferred from the ordering of the enum member 
+values.  As such, so changes are required over and above updating the enum.
 
 ## Others
 
