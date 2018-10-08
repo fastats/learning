@@ -10,3 +10,7 @@ Technical resources for learning about programming.
 ## Software Architecture
 
 - [Maintainable code through removing `if` statements (2018-March)](architecture/2018_03_maintainability_by_removing_if)
+
+## Numerical Programming
+
+- [Statistical Moments (2018-Aug)](performance/2018_08_statistical_moments)
