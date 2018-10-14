@@ -10,6 +10,7 @@ Technical resources for learning about programming.
 ## Software Architecture
 
 - [Maintainable code through removing `if` statements (2018-March)](architecture/2018_03_maintainability_by_removing_if)
+- [Enums (2018-Oct)](architecture/2018_10_enums)
 
 ## Numerical Programming
 
