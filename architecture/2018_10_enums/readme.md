@@ -258,7 +258,7 @@ class Direction(Enum):
     NORTH = North()
     SOUTH = South()
 
-    def __init__(self, value):
+    def __init__(self, item):
         self.item = item
 ```
 
