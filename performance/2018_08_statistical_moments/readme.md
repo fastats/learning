@@ -119,8 +119,8 @@ updates performed.
 To cover this, we will refer to the following papers - please download
 and read to complete the final tasks:
 
-[1] West - Updating Mean and Variance Estimates: An Improved Method (1979)
-[2] Meng - Simpler Online Updates for Arbitrary Order Central Moments (2015)
+1. [West - Updating Mean and Variance Estimates: An Improved Method (1979)][1]
+2. [Meng - Simpler Online Updates for Arbitrary Order Central Moments (2015)][2]
 
 West's paper introduces streaming Mean and Variance calculations which
 don't suffer from the round-off errors shown above. This is just one of
@@ -146,11 +146,15 @@ To conclude:
 - We saw that streaming versions of these calculations are possible, but
   we have to be *very* careful to ensure that floating-point numbers
   are of similar magnitudes.
-- We then saw smarter streaming update versions (in [1] West's paper
-  and [2] Meng's paper), which do not have the numerical stability
+- We then saw smarter streaming update versions (in [West's paper][1]
+  and [Meng's paper][2]), which do not have the numerical stability
   issues of the naive version.
 - These two algorithms are general solutions for streaming updates to
   statistical moment calculations, the more elegant versions of which
   have only recently been discovered.
 
 This is still an active area of research.
+
+
+[1]: https://people.xiph.org/~tterribe/tmp/homs/West79-_Updating_Mean_and_Variance_Estimates-_An_Improved_Method.pdf
+[2]: https://arxiv.org/pdf/1510.04923.pdf
