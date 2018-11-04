@@ -33,8 +33,9 @@ nicely in this image [from wikipedia](https://en.wikipedia.org/wiki/LU_decomposi
 
 <img src="./images/lu_wiki.svg">
 
-This represents a [matrix multiplication]() between the lower and upper
-matrices on the right-hand side.
+This represents a matrix multiplication between the lower and upper
+matrices on the right-hand side; ie, doing a matrix multiply of `L` and
+`U` returns the original matrix.
 
 ### Doolittle's Algorithm for LU Decomposition
 
