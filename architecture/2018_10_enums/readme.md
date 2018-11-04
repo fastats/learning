@@ -258,8 +258,8 @@ class Direction(Enum):
     NORTH = North()
     SOUTH = South()
 
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, item):
+        self.item = item
 ```
 
 This might seem a little complicated, so lets walk through each
@@ -274,10 +274,10 @@ bottom and move upwards:
   be called implicitly when the enum value is selected. When we execute
   `Direction.NORTH`, the `North()` instance which is created at import
   time is automatically passed to the constructor, and we store it as
-  `self.value`.
+  `self.item`.
 - In order to access this object, we then have to do
-  `Direction.NORTH.value.move()` or `Direction.NORTH.value.reverse()`,
-  ie, it is the `.value` access which now returns the raw enum value.
+  `Direction.NORTH.item.move()` or `Direction.NORTH.item.reverse()`,
+  ie, it is the `.item` access which now returns the raw enum value.
 - Moving upwards through the code, we have defined `North` and `South`
   classes which implement the required `move()` and `reverse()`
   interface.
@@ -292,6 +292,35 @@ bottom and move upwards:
 > **Task:** Try this for yourself; add a new function to the `ABC`,
   and only implement it on one of the subclasses. You should get a
   `TypeError: Can't instantiate abstract class` at import time.
+
+You can also implement the `ABC` interface on the Enum class, in order
+to avoid having to access the object via `item`:
+
+```python
+@unique
+class Direction(Enum):
+    NORTH = North()
+    SOUTH = South()
+
+    def __init__(self, item):
+        self._item = item
+
+    def move(self):
+        self._item.move()
+
+    def reverse(self):
+        self._item.reverse()
+```
+
+This removes the need to use the `.item` accessor to call the value
+methods, at the expense of needing to update the Enum class when adding
+methods to the interface.
+
+With this, you would call move with `Direction.NORTH.move()`.
+
+Unfortunately, due to the use of metaclasses for `ABC`s, you can't
+have `Direction` inherit from the `AbstractEnumValue` class, which
+could be a potential source of errors.
 
 You don't have to use a class hierarchy to store multiple pieces of
 logic; you can do the same using a tuple instead of a class:
