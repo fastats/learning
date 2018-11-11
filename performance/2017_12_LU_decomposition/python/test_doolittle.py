@@ -8,9 +8,11 @@ from .doolittle import lu_decomp
 from .lu_smorgasbord import lu_0, lu_1, lu_2, lu_parallel
 
 SERIAL_FNS = [lu_decomp, lu_0, lu_1, lu_2]
+PARALLEL_FNS = [lu_parallel]
+ALL_FNS = SERIAL_FNS + PARALLEL_FNS
 
 
-@mark.parametrize('fn', SERIAL_FNS, ids=lambda f: f.__name__)
+@mark.parametrize('fn', ALL_FNS, ids=lambda f: f.__name__)
 def test_doolittle_geeks_for_geeks(fn):
     """
     This example is taken from the geeks for geeks
@@ -44,7 +46,7 @@ def test_doolittle_geeks_for_geeks(fn):
     assert_array_almost_equal(upper, expected_upper)
 
 
-@mark.parametrize('fn', SERIAL_FNS, ids=lambda f: f.__name__)
+@mark.parametrize('fn', ALL_FNS, ids=lambda f: f.__name__)
 def test_doolittle_chapter_7(fn):
     """ This example comes from the PDF of chapter 7:
         www.math.iit.edu/~fass/477577_Chapter_7.pdf
@@ -78,7 +80,7 @@ def test_doolittle_chapter_7(fn):
     assert_array_almost_equal(expected_upper, upper)
 
 
-@mark.parametrize('fn', SERIAL_FNS, ids=lambda f: f.__name__)
+@mark.parametrize('fn', ALL_FNS, ids=lambda f: f.__name__)
 def test_doolittle_ust_hk(fn):
     """ This is the example from Ch06 UST HK:
         https://www.math.ust.hk/~mamu/courses/231/Slides/CH06_5A.pdf
@@ -122,9 +124,10 @@ def test_lu_decomp_heavy(fn):
     assert_array_almost_equal(lower @ upper, arr)
 
 
-def test_lu_decomp_heavy_parallel():
+@mark.parametrize('fn', PARALLEL_FNS, ids=lambda f: f.__name__)
+def test_lu_decomp_heavy_parallel(fn):
     arr = np.random.random((500, 500))
-    lower, upper = lu_parallel(arr)
+    lower, upper = fn(arr)
     assert_array_almost_equal(lower @ upper, arr)
 
 
