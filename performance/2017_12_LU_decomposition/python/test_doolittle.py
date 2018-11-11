@@ -2,11 +2,16 @@
 from numba import jit
 import numpy as np
 from numpy.testing import assert_array_almost_equal
+from pytest import mark
 
-from doolittle import lu_decomp
+from .doolittle import lu_decomp
+from .lu_smorgasbord import lu_0, lu_1, lu_2, lu_parallel
+
+SERIAL_FNS = [lu_decomp, lu_0, lu_1, lu_2]
 
 
-def test_doolittle_geeks_for_geeks():
+@mark.parametrize('fn', SERIAL_FNS, ids=lambda f: f.__name__)
+def test_doolittle_geeks_for_geeks(fn):
     """
     This example is taken from the geeks for geeks
     website:
@@ -18,7 +23,7 @@ def test_doolittle_geeks_for_geeks():
         [-4, -2, 8]
     ])
 
-    lower, upper = lu_decomp(arr)
+    lower, upper = fn(arr)
 
     # basic sanity
     final = lower @ upper
@@ -39,7 +44,8 @@ def test_doolittle_geeks_for_geeks():
     assert_array_almost_equal(upper, expected_upper)
 
 
-def test_doolittle_chapter_7():
+@mark.parametrize('fn', SERIAL_FNS, ids=lambda f: f.__name__)
+def test_doolittle_chapter_7(fn):
     """ This example comes from the PDF of chapter 7:
         www.math.iit.edu/~fass/477577_Chapter_7.pdf
 
@@ -51,7 +57,7 @@ def test_doolittle_chapter_7():
         [4, 6, 8]
     ])
 
-    lower, upper = lu_decomp(arr)
+    lower, upper = fn(arr)
 
     assert_array_almost_equal(lower @ upper, arr)
 
@@ -72,7 +78,8 @@ def test_doolittle_chapter_7():
     assert_array_almost_equal(expected_upper, upper)
 
 
-def test_doolittle_ust_hk():
+@mark.parametrize('fn', SERIAL_FNS, ids=lambda f: f.__name__)
+def test_doolittle_ust_hk(fn):
     """ This is the example from Ch06 UST HK:
         https://www.math.ust.hk/~mamu/courses/231/Slides/CH06_5A.pdf
 
@@ -85,7 +92,7 @@ def test_doolittle_ust_hk():
         [-1, 2, 3 , -1]
     ])
 
-    lower, upper = lu_decomp(arr)
+    lower, upper = fn(arr)
 
     assert_array_almost_equal(lower @ upper, arr)
 
@@ -108,9 +115,16 @@ def test_doolittle_ust_hk():
     assert_array_almost_equal(expected_upper, upper)
 
 
-def test_lu_decomp_heavy():
+@mark.parametrize('fn', SERIAL_FNS, ids=lambda f: f.__name__)
+def test_lu_decomp_heavy(fn):
     arr = np.random.random((500, 500))
-    lower, upper = jit(lu_decomp)(arr)
+    lower, upper = jit(fn)(arr)
+    assert_array_almost_equal(lower @ upper, arr)
+
+
+def test_lu_decomp_heavy_parallel():
+    arr = np.random.random((500, 500))
+    lower, upper = lu_parallel(arr)
     assert_array_almost_equal(lower @ upper, arr)
 
 
