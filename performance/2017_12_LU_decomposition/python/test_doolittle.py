@@ -2,18 +2,11 @@
 from numba import jit
 import numpy as np
 from numpy.testing import assert_array_almost_equal
-from pytest import mark
 
-from .doolittle import lu_decomp
-from .lu_smorgasbord import lu_0, lu_1, lu_2, lu_parallel
-
-SERIAL_FNS = [lu_decomp, lu_0, lu_1, lu_2]
-PARALLEL_FNS = [lu_parallel]
-ALL_FNS = SERIAL_FNS + PARALLEL_FNS
+from doolittle import lu_decomp
 
 
-@mark.parametrize('fn', ALL_FNS, ids=lambda f: f.__name__)
-def test_doolittle_geeks_for_geeks(fn):
+def test_doolittle_geeks_for_geeks():
     """
     This example is taken from the geeks for geeks
     website:
@@ -25,7 +18,7 @@ def test_doolittle_geeks_for_geeks(fn):
         [-4, -2, 8]
     ])
 
-    lower, upper = fn(arr)
+    lower, upper = lu_decomp(arr)
 
     # basic sanity
     final = lower @ upper
@@ -46,8 +39,7 @@ def test_doolittle_geeks_for_geeks(fn):
     assert_array_almost_equal(upper, expected_upper)
 
 
-@mark.parametrize('fn', ALL_FNS, ids=lambda f: f.__name__)
-def test_doolittle_chapter_7(fn):
+def test_doolittle_chapter_7():
     """ This example comes from the PDF of chapter 7:
         www.math.iit.edu/~fass/477577_Chapter_7.pdf
 
@@ -59,7 +51,7 @@ def test_doolittle_chapter_7(fn):
         [4, 6, 8]
     ])
 
-    lower, upper = fn(arr)
+    lower, upper = lu_decomp(arr)
 
     assert_array_almost_equal(lower @ upper, arr)
 
@@ -80,8 +72,7 @@ def test_doolittle_chapter_7(fn):
     assert_array_almost_equal(expected_upper, upper)
 
 
-@mark.parametrize('fn', ALL_FNS, ids=lambda f: f.__name__)
-def test_doolittle_ust_hk(fn):
+def test_doolittle_ust_hk():
     """ This is the example from Ch06 UST HK:
         https://www.math.ust.hk/~mamu/courses/231/Slides/CH06_5A.pdf
 
@@ -94,7 +85,7 @@ def test_doolittle_ust_hk(fn):
         [-1, 2, 3 , -1]
     ])
 
-    lower, upper = fn(arr)
+    lower, upper = lu_decomp(arr)
 
     assert_array_almost_equal(lower @ upper, arr)
 
@@ -117,17 +108,9 @@ def test_doolittle_ust_hk(fn):
     assert_array_almost_equal(expected_upper, upper)
 
 
-@mark.parametrize('fn', SERIAL_FNS, ids=lambda f: f.__name__)
-def test_lu_decomp_heavy(fn):
+def test_lu_decomp_heavy():
     arr = np.random.random((500, 500))
-    lower, upper = jit(fn)(arr)
-    assert_array_almost_equal(lower @ upper, arr)
-
-
-@mark.parametrize('fn', PARALLEL_FNS, ids=lambda f: f.__name__)
-def test_lu_decomp_heavy_parallel(fn):
-    arr = np.random.random((500, 500))
-    lower, upper = fn(arr)
+    lower, upper = jit(lu_decomp)(arr)
     assert_array_almost_equal(lower @ upper, arr)
 
 
