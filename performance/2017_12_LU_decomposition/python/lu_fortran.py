@@ -85,8 +85,6 @@ def lu_decomp_c_fortran(x):
     return lower, upper
 
 
-
-
 if __name__ == '__main__':
     n = 1024
     X = np.random.uniform(size=(n, n))
@@ -101,6 +99,7 @@ if __name__ == '__main__':
         l2, u2 = lu_decomp_c_fortran(X)
         t2 = time.process_time()
         np.testing.assert_allclose(l, l2)
+        np.testing.assert_allclose(u, u2)
         print('Adjusted took:', t2 - t1)
         print('------------')
 
