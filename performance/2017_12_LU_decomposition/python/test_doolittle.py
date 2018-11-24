@@ -6,12 +6,13 @@ from pytest import mark
 
 from .doolittle import lu_decomp
 from .lu_smorgasbord import (
-    lu_0, lu_1, lu_2, lu_3, lu_4, lu_5, lu_parallel
+    lu_0, lu_1, lu_2, lu_3, lu_4, lu_5,
+    lu_parallel,lu_parallel_2
 )
 from .lu_c_fortran import lu_decomp_c_fortran
 
 SERIAL_FNS = [lu_decomp, lu_0, lu_1, lu_2, lu_3, lu_4, lu_5, lu_decomp_c_fortran]
-PARALLEL_FNS = [lu_parallel]
+PARALLEL_FNS = [lu_parallel, lu_parallel_2]
 ALL_FNS = SERIAL_FNS + PARALLEL_FNS
 
 

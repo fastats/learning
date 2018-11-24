@@ -1,6 +1,10 @@
 
 import numpy as np
-from numba import njit, prange
+from numba import njit, prange, config
+
+
+# config.THREADING_LAYER = 'tbb'
+# to use this, first do: conda install tbb
 
 
 def lu_0(A):
@@ -132,3 +136,24 @@ def lu_parallel(x):
             lower[k][i] = (x[k][i] - total) / upper[i][i]
 
     return lower, upper
+
+
+@njit(parallel=True)
+def lu_parallel_2(x):
+    upper = np.zeros_like(x).astype(np.float64)
+    n = len(x)
+    lower = np.eye(n).astype(np.float64)
+
+    for i in range(n):
+        lower[i][i] = 1.0
+
+        for k in prange(i, n):
+            total = lower[i, :] @ upper[:, k]
+            upper[i][k] = x[i][k] - total
+
+        for k in prange(i + 1, n):
+            total = lower[k, :] @ upper[:, i]
+            lower[k][i] = (x[k][i] - total) / upper[i][i]
+
+    return lower, upper
+
