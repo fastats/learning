@@ -4,7 +4,6 @@ from numba import njit, prange
 
 
 def lu_0(A):
-
     assert A.shape[0] == A.shape[1]
 
     U = A.astype(np.float64)
@@ -22,6 +21,8 @@ def lu_0(A):
 
 
 def lu_1(A):
+    assert A.shape[0] == A.shape[1]
+
     A = A.astype(np.float64)
     n = A.shape[0]
 
@@ -40,6 +41,8 @@ def lu_1(A):
 
 
 def lu_2(A):
+    assert A.shape[0] == A.shape[1]
+
     A = A.astype(np.float64)
     n = A.shape[0]
 
@@ -60,13 +63,56 @@ def lu_2(A):
     return lower, upper
 
 
+def lu_3(A):
+    assert A.shape[0] == A.shape[1]
+
+    n = A.shape[0]
+    U = A.astype(np.float64)
+    L = np.eye(n)
+    for i in range(1, n):
+        for j in range(i):
+            L[i, j] = U[i, j] / U[j, j]
+            for k in range(j, n):
+                U[i, k] -= L[i, j] * U[j, k]
+    return L, U
+
+
+def lu_4(A):
+    assert A.shape[0] == A.shape[1]
+
+    n = A.shape[0]
+    U = A.astype(np.float64)
+    L = np.eye(n)
+    for i in range(1, n):
+        for j in range(i):
+            L[i, j] = U[i, j] / U[j, j]
+            U[i, :] -= L[i, j] * U[j, :]
+    return L, U
+
+
+def lu_5(A):
+    assert A.shape[0] == A.shape[1]
+
+    A = A.astype(np.float64)
+    n = A.shape[0]
+
+    for k in range(n - 1):
+        A[k + 1: n, k] /= A[k, k]
+        A[k + 1: n, k + 1: n] -= np.outer(A[k + 1: n, k], A[k, k + 1: n])
+
+    lower = np.tril(A, k=-1)
+    np.fill_diagonal(lower, 1)
+
+    upper = np.triu(A, k=0)
+
+    return lower, upper
+
+
 @njit(parallel=True)
 def lu_parallel(x):
-
-    lower = np.zeros_like(x)
     upper = np.zeros_like(x)
-
     n = len(x)
+    lower = np.eye(n)
 
     for i in range(n):
         lower[i][i] = 1.0
