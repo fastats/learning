@@ -114,12 +114,11 @@ def lu_5(A):
 
 @njit(parallel=True)
 def lu_parallel(x):
-    upper = np.zeros_like(x)
+    upper = np.asfortranarray(np.zeros(x.shape, dtype=np.float64))
     n = len(x)
     lower = np.eye(n)
 
     for i in range(n):
-        lower[i][i] = 1.0
 
         for k in prange(i, n):
             total = 0.0
@@ -140,12 +139,11 @@ def lu_parallel(x):
 
 @njit(parallel=True)
 def lu_parallel_2(x):
-    upper = np.asfortranarray(np.zeros_like(x).astype(np.float64))
+    upper = np.asfortranarray(np.zeros(x.shape, dtype=np.float64))
     n = len(x)
-    lower = np.ascontiguousarray(np.eye(n).astype(np.float64))
+    lower = np.ascontiguousarray(np.eye(n))
 
     for i in range(n):
-        lower[i][i] = 1.0
 
         for k in prange(i, n):
             total = lower[i, :] @ upper[:, k]
