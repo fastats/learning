@@ -49,14 +49,12 @@ if __name__ == '__main__':
         raw_df = pd.DataFrame(raw_results, columns=['idx', 'vals']).set_index('idx')
         return raw_df
 
-    #df = collect_results(lu_decomp_python, jit=False)
-    #plt.loglog(df, label=lu_decomp_python.__name__)
+    df = collect_results(lu_decomp_python, jit=False)
+    plt.loglog(df, label=lu_decomp_python.__name__)
 
     # jitted functions
     fns = [lu_decomp, lu_decomp_c_fortran, lu_0, lu_1, lu_2,
            lu_3, lu_4, lu_5, lu_parallel, lu_parallel_2]
-
-    fns = [lu_parallel, lu_parallel_2]
 
     for fn in fns:
         df = collect_results(fn)
