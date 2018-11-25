@@ -4,7 +4,6 @@ import numpy as np
 import time
 
 
-@njit
 def lu_decomp_original(x):
     """ `x` must be a N x N matrix which is decomposable
         into lower and upper triangular sections.
@@ -42,7 +41,6 @@ def lu_decomp_original(x):
     return lower, upper
 
 
-@njit
 def lu_decomp_c_fortran(x):
     """ We notice that the upper matrix is always being accessed
     in the "wrong" order, relative to the optimal way to lay out
@@ -88,6 +86,9 @@ def lu_decomp_c_fortran(x):
 if __name__ == '__main__':
     n = 1024
     X = np.random.uniform(size=(n, n))
+
+    lu_decomp_original = njit(lu_decomp_original)
+    lu_decomp_c_fortran = njit(lu_decomp_c_fortran)
 
     for i in range(2):
         t1 = time.process_time()

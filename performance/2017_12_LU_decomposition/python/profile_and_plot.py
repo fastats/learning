@@ -9,7 +9,11 @@ import pandas as pd
 import numba
 
 from doolittle import lu_decomp
-from lu_smorgasbord import lu_0, lu_1, lu_2, lu_parallel
+from lu_smorgasbord import (
+    lu_0, lu_1, lu_2, lu_3, lu_4, lu_5,
+    lu_parallel, lu_parallel_2
+)
+from lu_c_fortran import lu_decomp_c_fortran
 
 
 if __name__ == '__main__':
@@ -49,7 +53,10 @@ if __name__ == '__main__':
     plt.loglog(df, label=lu_decomp_python.__name__)
 
     # jitted functions
-    for fn in lu_decomp, lu_0, lu_1, lu_2, lu_parallel:
+    fns = [lu_decomp, lu_decomp_c_fortran, lu_0, lu_1, lu_2,
+           lu_3, lu_4, lu_5, lu_parallel, lu_parallel_2]
+
+    for fn in fns:
         df = collect_results(fn)
         plt.loglog(df, label=fn.__name__)
 
