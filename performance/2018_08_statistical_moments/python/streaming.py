@@ -1,11 +1,10 @@
 
 import numpy as np
-import pandas as pd
 import scipy.stats
 from numba import njit
 
 
-def naive_all_stats(data: pd.DataFrame):
+def naive_all_stats(data):
 
     # initialise output data structures
     covariances, variances, std, mean, correlations, skewness, kurtosis = initialise_outputs(data.values)
@@ -33,8 +32,8 @@ def naive_all_stats(data: pd.DataFrame):
     }
 
 
-def streaming_all_stats(returns: pd.DataFrame):
-    covariances, variances, std, mean, correlations, skewness, kurtosis = streaming_all_stats_inner(returns.values)
+def streaming_all_stats(data):
+    covariances, variances, std, mean, correlations, skewness, kurtosis = streaming_all_stats_inner(data.values)
     return {
         'covariances': covariances,
         'variances': variances,

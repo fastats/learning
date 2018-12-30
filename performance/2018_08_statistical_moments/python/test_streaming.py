@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from pytest import mark
 
-from .streaming_all import streaming_all_stats, naive_all_stats
+from .streaming import streaming_all_stats, naive_all_stats
 
 TWO_YEARS = 365 * 2
 ASSETS = ['A', 'B', 'C', 'D', 'E']
@@ -18,16 +18,16 @@ def sample_returns():
     n = len(ASSETS)
     rng = np.random.RandomState(0)
 
-    data = rng.randn(TWO_YEARS * 5) / 10
+    data = rng.randn(TWO_YEARS * n) / 10
     yield make_df(data, 'normal')
 
-    data = rng.randn(TWO_YEARS * 5) * 1e12
+    data = rng.randn(TWO_YEARS * n) * 1e12
     yield make_df(data, 'normal very large')
 
-    data = rng.randn(TWO_YEARS * 5) * 1e-12
+    data = rng.randn(TWO_YEARS * n) * 1e-12
     yield make_df(data, 'normal very small')
 
-    data = rng.randn(TWO_YEARS * 5) * rng.choice((1e12, 1e-12), TWO_YEARS * 5)
+    data = rng.randn(TWO_YEARS * n) * rng.choice((1e12, 1e-12), TWO_YEARS * 5)
     yield make_df(data, 'normal biggie smalls')
 
     data = rng.lognormal(0.1, 0.2, TWO_YEARS * n) / 10
