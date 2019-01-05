@@ -10,8 +10,7 @@ ASSETS = ['A', 'B', 'C', 'D', 'E']
 
 
 def make_df(data, label):
-    n = len(ASSETS)
-    return pd.DataFrame(data.reshape(TWO_YEARS, n), columns=ASSETS), label
+    return pd.DataFrame(data.reshape(TWO_YEARS, len(ASSETS)), columns=ASSETS), label
 
 
 def sample_returns():
@@ -26,9 +25,6 @@ def sample_returns():
 
     data = rng.randn(TWO_YEARS * n) * 1e-12
     yield make_df(data, 'normal very small')
-
-    data = rng.randn(TWO_YEARS * n) * rng.choice((1e12, 1e-12), TWO_YEARS * 5)
-    yield make_df(data, 'normal biggie smalls')
 
     data = rng.lognormal(0.1, 0.2, TWO_YEARS * n) / 10
     yield make_df(data, 'lognormal')
@@ -45,11 +41,11 @@ def test_streaming_all(data):
     assert expected.keys() == got.keys()
 
     for k, v in expected.items():
-        print(k)
         if k != 'skewness':
-            np.testing.assert_allclose(v, got[k], equal_nan=True, atol=1e-14)
+            np.testing.assert_allclose(v, got[k], equal_nan=True)
         else:
             np.testing.assert_allclose(v, got[k], equal_nan=True, atol=1e-9)
+            # difference is retained precision vs scipy...
 
 
 if __name__ == '__main__':
