@@ -239,7 +239,7 @@ Yet this takes roughly the same amount of time (ie, within error
 bounds) to read in as the uncompressed file:
 
 ```bash
-In [19]: %timeit df = pd.read_hdf('comp_zstd10.h5', key='df')
+In [19]: %timeit df = pd.read_hdf('comp_zstd9.h5', key='df')
 572 ms ± 11 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 ```
 
@@ -487,7 +487,7 @@ bottleneck, then Apache Parquet format may be the best choice otherwise
 standard HDF5 may be better. You will only know by testing multiple
 variants and profiling systematically.
 
-To conclude:
+### Conclusions
 
 - We can save significant amounts of memory by using categoricals /
   smaller float/integer representations (ie, float32)
