@@ -252,7 +252,7 @@ will generally find very elegant solutions using Linear Algebra.
 
 ## References
 
-1. B. Berggren. Pytagoreiska trianglar. TidskriftforElementarMatematik,
+1. B. Berggren. Pytagoreiska trianglar. Tidskrift for Elementar Matematik,
    Fysik och Kemi, 17(1934), 129{139}.
 
 2. Barning F.J.M. Over pythagorese en bijna-pythagorese driehoeken en
