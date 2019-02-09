@@ -18,3 +18,4 @@ Technical resources for learning about programming.
 ## Numerical Programming
 
 - [Statistical Moments (2018-Aug)](numerical/2018_08_statistical_moments)
+- [Pythagorean Triples (2019-Feb)](numerical/2019_02_pythagorean_triples)
