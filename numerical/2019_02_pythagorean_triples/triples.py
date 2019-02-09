@@ -42,7 +42,7 @@ C = np.array([
 ])
 
 
-def barning_triples(start=(3, 4, 5)):
+def berggren_triples(start=(3, 4, 5)):
     last_a = last_b = last_c = np.array(start)
     while True:
         last_a = A @ last_a
@@ -64,6 +64,6 @@ if __name__ == '__main__':
         r = next(fib)
         print(r, r[0]*r[0] + r[1]*r[1] == r[2]*r[2])
 
-    barn = barning_triples()
+    berg = berggren_triples()
     for x in range(10):
-        print(next(barn))
+        print(next(berg))

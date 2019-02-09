@@ -186,7 +186,7 @@ known Pythagorean Triple, then for each dot product we will get
 another Pythagorean Triple:
 
 ```python
-def barning_triples(start=(3, 4, 5)):
+def berggren_triples(start=(3, 4, 5)):
     last_a = last_b = last_c = np.array(start)
     while True:
         last_a = A @ last_a
@@ -202,9 +202,9 @@ def barning_triples(start=(3, 4, 5)):
 Which can be run as follows:
 
 ```python
->>> barn = barning_triples()
+>>> berg = berggren_triples()
 >>> for x in range(10):
-... print(next(barn))
+... print(next(berg))
 
 [ 5 12 13]
 [21 20 29]
@@ -229,7 +229,7 @@ Interestingly, this Berggren algorithm can be shortened using the new
 in python 3.8:
 
 ```python
-def barning_triples(start=(3, 4, 5)):
+def berggren_triples(start=(3, 4, 5)):
     last_a = last_b = last_c = np.array(start)
     while True:
         yield (last_a := A @ last_a)
