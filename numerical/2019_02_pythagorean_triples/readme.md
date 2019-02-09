@@ -88,6 +88,9 @@ that the sum of `n` odd integers is $n^2$.
 Implementing this in python can be done as follows:
 
 ```python
+from itertools import count
+from math import sqrt
+
 def fibonacci_triples():
     odd_ints = []
     for idx, odd in enumerate(count(start=1, step=2)):
@@ -136,3 +139,149 @@ There are two important things to note here:
 If you compare with the naive version above, you will quickly see that
 the Fibonacci version has missed `(6, 8, 10)` and `(8, 15, 17)` among
 others.
+
+The implementation above also requires the entire list of previous odd
+integers to be kept in memory - this could be improved by storing just
+the sum and the sum up to `n - 1`, however in its current state this
+algorithm's memory usage scales as `O(n)`.
+
+So is it possible to have an algorithm which allows streaming values
+(unlike the naive version), but which also generates all triples (unlike
+the Fibonacci method), and also operates in constant time and constant
+memory?
+
+### Barning Method
+
+In 1934 Berggren showed that Linear Algebra can be used to
+generate all *primitive* Pythagorean Triples from a known starting
+triple \[1\].
+
+> Note: A *primitive* triple is one where the values `(a, b, c)` do
+  **not** share a common divisor.
+
+Using these three hard-coded matrices:
+
+```python
+A = np.array([
+    [1, -2, 2],
+    [2, -1, 2],
+    [2, -2, 3]
+])
+
+B = np.array([
+    [1, 2, 2],
+    [2, 1, 2],
+    [2, 2, 3]
+])
+
+C = np.array([
+    [-1, 2, 2],
+    [-2, 1, 2],
+    [-2, 2, 3]
+])
+```
+
+If we take the dot product of these three matrices and a vector of a
+known Pythagorean Triple, then for each dot product we will get
+another Pythagorean Triple:
+
+```python
+def barning_triples(start=(3, 4, 5)):
+    last_a = last_b = last_c = np.array(start)
+    while True:
+        last_a = A @ last_a
+        yield last_a
+
+        last_b = B @ last_b
+        yield last_b
+
+        last_c = C @ last_c
+        yield last_c
+```
+
+Which can be run as follows:
+
+```python
+>>> barn = barning_triples()
+>>> for x in range(10):
+... print(next(barn))
+
+[ 5 12 13]
+[21 20 29]
+[15  8 17]
+[ 7 24 25]
+[119 120 169]
+[35 12 37]
+[ 9 40 41]
+[697 696 985]
+[63 16 65]
+[11 60 61]
+```
+
+Obviously this runs in constant time and constant space (up to the
+max integer size supported by numpy).
+
+In 1963, F.J.M. Barning rediscovered these matrices \[2\], as did Hall
+in 1970 \[3\].
+
+Interestingly, this Barning algorithm can be shortened using the new
+[assignment expression syntax](https://www.python.org/dev/peps/pep-0572/)
+in python 3.8:
+
+```python
+def barning_triples(start=(3, 4, 5)):
+    last_a = last_b = last_c = np.array(start)
+    while True:
+        yield (last_a := A @ last_a)
+        yield (last_b := B @ last_b)
+        yield (last_c := C @ last_c)
+```
+
+Which, when you understand the mathematics, is considerably more
+elegant than the C++ ranges implementation.
+
+## Conclusions
+
+In this post we have tried to show that when faced with a seemingly
+simple numerical problem to solve, there are usually many ways of
+solving it and the simple, naive method may be terribly inefficient.
+
+It is usually best to search for or derive smarter solutions which have
+better scaling in time or space, and in a large number of problems you
+will generally find very elegant solutions using Linear Algebra.
+
+## References
+
+1. B. Berggren. Pytagoreiska trianglar. TidskriftforElementarMatematik,
+   Fysik och Kemi, 17(1934), 129{139}.
+
+2. Barning F.J.M. Over pythagorese en bijna-pythagorese driehoeken en
+  een generatieproces met behulp van unimodulaire matrices. Stichting
+  Mathematisch Centrum. Zuivere Wiskunde. Stichting Mathematisch
+  Centrum; 1963.
+
+3. A. Hall. Genealogy of Pythagorean Triads. The Mathematical Gazette,
+   54(1970), 377{379}.
+
+## Tasks
+
+- Implement a robust check for square integers, and show it working in
+  the Fibonacci Method above. The current `square` check fails on
+  certain edge cases.
+
+- Implement the Fibonacci Method with constant memory usage instead of
+  linear.
+
+- Create a program which will visualise the [Tree of Primitive
+  Pythagorean Triples](https://en.wikipedia.org/wiki/Tree_of_primitive_Pythagorean_triples).
+  Note that only **primitive** triples should be on this tree, which
+  are triples where `(a, b, c)` do not share a common divisor.
+
+- Write numba `jit` implementations of the algorithms above, and show
+  how they scale in time and memory by calculating all triples up to the
+  size of a 32-bit integer.
+
+- Show why the Berggren / Barning matrices work.
+
+- Show alternative methods of calculating Pythagorean Triples (we have
+  only shown 3 above, but there are many more in the literature).
