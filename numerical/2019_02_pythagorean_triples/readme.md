@@ -224,7 +224,7 @@ max integer size supported by numpy).
 In 1963, F.J.M. Barning rediscovered these matrices \[2\], as did Hall
 in 1970 \[3\].
 
-Interestingly, this Barning algorithm can be shortened using the new
+Interestingly, this Berggren algorithm can be shortened using the new
 [assignment expression syntax](https://www.python.org/dev/peps/pep-0572/)
 in python 3.8:
 
