@@ -150,7 +150,7 @@ So is it possible to have an algorithm which allows streaming values
 the Fibonacci method), and also operates in constant time and constant
 memory?
 
-### Barning Method
+### Berggren Method
 
 In 1934 Berggren showed that Linear Algebra can be used to
 generate all *primitive* Pythagorean Triples from a known starting
