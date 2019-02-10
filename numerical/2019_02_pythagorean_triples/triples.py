@@ -17,7 +17,6 @@ def fibonacci_triples():
         odd_ints.append(odd)
 
         if int(odd**0.5)**2 == int(odd) and len(odd_ints) >= 4:
-            n = (odd + 1) / 2
             b2 = sum(odd_ints[:-1])
             c2 = sum(odd_ints)
             yield tuple(map(int, (sqrt(odd), sqrt(b2), sqrt(c2))))
