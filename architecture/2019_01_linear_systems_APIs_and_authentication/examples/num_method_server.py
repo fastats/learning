@@ -52,7 +52,7 @@ def make_array_from_json(js):
 
 
 @app.route('/row_interchange')
-@api_token_required
+@http_login_required
 def basic_auth_row_interchange():
     req_content = request.json
     np_array = make_array_from_json(req_content)
@@ -63,15 +63,6 @@ def basic_auth_row_interchange():
 @app.route('/scalar_multiplication')
 @api_token_required
 def api_token_scalar_multiplication():
-    req_content = request.json
-    np_array = make_array_from_json(req_content)
-    res = scalar_multiplication(np_array, req_content['mult_index'], req_content['mult_by'])
-    return jsonify(res.tolist())
-
-
-@app.route('/add_scalar_mult')
-@api_token_required
-def oauth_add_scalar_mult():
     req_content = request.json
     np_array = make_array_from_json(req_content)
     res = scalar_multiplication(np_array, req_content['mult_index'], req_content['mult_by'])
